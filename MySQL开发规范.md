@@ -433,7 +433,7 @@ mysql> desc select ugc_id, user_id, order_id from t1 where user_id = 'xxx' or or
 +----+-------------+-------+------------+------+---------------------+------+---------+------+------+----------+-------------+
 | id | select_type | table | partitions | type | possible_keys       | key  | key_len | ref  | rows | filtered | Extra       |
 +----+-------------+-------+------------+------+---------------------+------+---------+------+------+----------+-------------+
-|  1 | SIMPLE      | t1   | NULL       | ALL  | idx_orderid,idx_uid | NULL | NULL    | NULL | 5701 |    19.00 | Using where |
+|  1 | SIMPLE      | t1    | NULL       | ALL  | idx_orderid,idx_uid | NULL | NULL    | NULL | 5701 |    19.00 | Using where |
 +----+-------------+-------+------------+------+---------------------+------+---------+------+------+----------+-------------+
 1 row in set, 1 warning (0.02 sec)
 
