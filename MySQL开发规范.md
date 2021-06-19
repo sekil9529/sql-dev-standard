@@ -444,8 +444,8 @@ mysql> desc select ugc_id, user_id, order_id from t1 where user_id = 'xxx'
 +----+--------------+------------+------------+------+---------------+-------------+---------+-------+------+----------+-----------------+
 | id | select_type  | table      | partitions | type | possible_keys | key         | key_len | ref   | rows | filtered | Extra           |
 +----+--------------+------------+------------+------+---------------+-------------+---------+-------+------+----------+-----------------+
-|  1 | PRIMARY      | t1        | NULL       | ref  | idx_uid       | idx_uid     | 203     | const |   17 |   100.00 | NULL            |
-|  2 | UNION        | t1        | NULL       | ref  | idx_orderid   | idx_orderid | 203     | const |    1 |   100.00 | NULL            |
+|  1 | PRIMARY      | t1         | NULL       | ref  | idx_uid       | idx_uid     | 203     | const |   17 |   100.00 | NULL            |
+|  2 | UNION        | t1         | NULL       | ref  | idx_orderid   | idx_orderid | 203     | const |    1 |   100.00 | NULL            |
 | NULL | UNION RESULT | <union1,2> | NULL       | ALL  | NULL          | NULL        | NULL    | NULL  | NULL |     NULL | Using temporary |
 +----+--------------+------------+------------+------+---------------+-------------+---------+-------+------+----------+-----------------+
 3 rows in set, 1 warning (0.01 sec)
@@ -458,7 +458,7 @@ mysql> desc select ugc_id, user_id, order_id from t1 where user_id = 'xxx' or or
 +----+-------------+-------+------------+-------------+---------------------+---------------------+---------+------+------+----------+----------------------------------------------------+
 | id | select_type | table | partitions | type        | possible_keys       | key                 | key_len | ref  | rows | filtered | Extra                                              |
 +----+-------------+-------+------------+-------------+---------------------+---------------------+---------+------+------+----------+----------------------------------------------------+
-|  1 | SIMPLE      | t1   | NULL       | index_merge | idx_orderid,idx_uid | idx_uid,idx_orderid | 203,203 | NULL |   18 |   100.00 | Using sort_union(idx_uid,idx_orderid); Using where |
+|  1 | SIMPLE      | t1    | NULL       | index_merge | idx_orderid,idx_uid | idx_uid,idx_orderid | 203,203 | NULL |   18 |   100.00 | Using sort_union(idx_uid,idx_orderid); Using where |
 +----+-------------+-------+------------+-------------+---------------------+---------------------+---------+------+------+----------+----------------------------------------------------+
 1 row in set, 1 warning (0.01 sec)
 ```
@@ -489,7 +489,7 @@ mysql> desc select ugc_id, content, create_time from t1 where date(create_time) 
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
 | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
-|  1 | SIMPLE      | t1   | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5701 |   100.00 | Using where |
+|  1 | SIMPLE      | t1    | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5701 |   100.00 | Using where |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
 1 row in set, 1 warning (0.01 sec)
 
@@ -498,7 +498,7 @@ mysql> desc select ugc_id, content, create_time from t1 where create_time >= '20
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+-----------------------+
 | id | select_type | table | partitions | type  | possible_keys | key       | key_len | ref  | rows | filtered | Extra                 |
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+-----------------------+
-|  1 | SIMPLE      | t1   | NULL       | range | idx_ctime     | idx_ctime | 6       | NULL |    1 |   100.00 | Using index condition |
+|  1 | SIMPLE      | t1    | NULL       | range | idx_ctime     | idx_ctime | 6       | NULL |    1 |   100.00 | Using index condition |
 +----+-------------+-------+------------+-------+---------------+-----------+---------+------+------+----------+-----------------------+
 1 row in set, 1 warning (0.01 sec)
 
@@ -507,7 +507,7 @@ mysql> desc select product_id, price from t2 where unique_id * 2 > 100000 limit 
 +----+-------------+---------+------------+------+---------------+------+---------+------+-------+----------+-------------+
 | id | select_type | table   | partitions | type | possible_keys | key  | key_len | ref  | rows  | filtered | Extra       |
 +----+-------------+---------+------------+------+---------------+------+---------+------+-------+----------+-------------+
-|  1 | SIMPLE      | t2 | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 13244 |   100.00 | Using where |
+|  1 | SIMPLE      | t2      | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 13244 |   100.00 | Using where |
 +----+-------------+---------+------------+------+---------------+------+---------+------+-------+----------+-------------+
 1 row in set, 1 warning (0.01 sec)
 
@@ -516,7 +516,7 @@ mysql> desc select product_id, price from t2 where unique_id > 50000 limit 10;
 +----+-------------+---------+------------+-------+---------------+--------------+---------+------+------+----------+-----------------------+
 | id | select_type | table   | partitions | type  | possible_keys | key          | key_len | ref  | rows | filtered | Extra                 |
 +----+-------------+---------+------------+-------+---------------+--------------+---------+------+------+----------+-----------------------+
-|  1 | SIMPLE      | t2 | NULL       | range | idx_uniqueid  | idx_uniqueid | 4       | NULL |    1 |   100.00 | Using index condition |
+|  1 | SIMPLE      | t2      | NULL       | range | idx_uniqueid  | idx_uniqueid | 4       | NULL |    1 |   100.00 | Using index condition |
 +----+-------------+---------+------------+-------+---------------+--------------+---------+------+------+----------+-----------------------+
 1 row in set, 1 warning (0.02 sec)
 ```
@@ -529,7 +529,7 @@ mysql> desc select register_prop_id, prop_id from t1 where register_prop_id = 1;
 +----+-------------+---------------+------------+------+---------------+------+---------+------+------+----------+-------------+
 | id | select_type | table         | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
 +----+-------------+---------------+------------+------+---------------+------+---------+------+------+----------+-------------+
-|  1 | SIMPLE      | t1 | NULL       | ALL  | PRIMARY       | NULL | NULL    | NULL |    5 |    20.00 | Using where |
+|  1 | SIMPLE      | t1            | NULL       | ALL  | PRIMARY       | NULL | NULL    | NULL |    5 |    20.00 | Using where |
 +----+-------------+---------------+------------+------+---------------+------+---------+------+------+----------+-------------+
 1 row in set, 3 warnings (0.01 sec)
 
@@ -538,7 +538,7 @@ mysql> desc select register_prop_id, prop_id from t1 where register_prop_id = '1
 +----+-------------+---------------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
 | id | select_type | table         | partitions | type  | possible_keys | key     | key_len | ref   | rows | filtered | Extra |
 +----+-------------+---------------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
-|  1 | SIMPLE      | t1 | NULL       | const | PRIMARY       | PRIMARY | 202     | const |    1 |   100.00 | NULL  |
+|  1 | SIMPLE      | t1            | NULL       | const | PRIMARY       | PRIMARY | 202     | const |    1 |   100.00 | NULL  |
 +----+-------------+---------------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
 1 row in set, 1 warning (0.01 sec)
 ```
@@ -559,8 +559,8 @@ mysql> desc select ugc_id from t1 union select order_id from t2 limit 1;
 +----+--------------+------------+------------+-------+---------------+-------------------+---------+------+------+----------+-----------------+
 | id | select_type  | table      | partitions | type  | possible_keys | key               | key_len | ref  | rows | filtered | Extra           |
 +----+--------------+------------+------------+-------+---------------+-------------------+---------+------+------+----------+-----------------+
-|  1 | PRIMARY      | t1        | NULL       | index | NULL          | idx_ctime         | 6       | NULL | 5703 |   100.00 | Using index     |
-|  2 | UNION        | t2      | NULL       | index | NULL          | idx_state_paytime | 7       | NULL |  826 |   100.00 | Using index     |
+|  1 | PRIMARY      | t1         | NULL       | index | NULL          | idx_ctime         | 6       | NULL | 5703 |   100.00 | Using index     |
+|  2 | UNION        | t2         | NULL       | index | NULL          | idx_state_paytime | 7       | NULL |  826 |   100.00 | Using index     |
 | NULL | UNION RESULT | <union1,2> | NULL       | ALL   | NULL          | NULL              | NULL    | NULL | NULL |     NULL | Using temporary |
 +----+--------------+------------+------------+-------+---------------+-------------------+---------+------+------+----------+-----------------+
 3 rows in set, 1 warning (0.01 sec)
@@ -570,8 +570,8 @@ mysql> desc select ugc_id from t1 union all select order_id from t2 limit 1;
 +----+-------------+-------+------------+-------+---------------+-------------------+---------+------+------+----------+-------------+
 | id | select_type | table | partitions | type  | possible_keys | key               | key_len | ref  | rows | filtered | Extra       |
 +----+-------------+-------+------------+-------+---------------+-------------------+---------+------+------+----------+-------------+
-|  1 | PRIMARY     | t1   | NULL       | index | NULL          | idx_ctime         | 6       | NULL | 5703 |   100.00 | Using index |
-|  2 | UNION       | t2 | NULL       | index | NULL          | idx_state_paytime | 7       | NULL |  826 |   100.00 | Using index |
+|  1 | PRIMARY     | t1    | NULL       | index | NULL          | idx_ctime         | 6       | NULL | 5703 |   100.00 | Using index |
+|  2 | UNION       | t2    | NULL       | index | NULL          | idx_state_paytime | 7       | NULL |  826 |   100.00 | Using index |
 +----+-------------+-------+------------+-------+---------------+-------------------+---------+------+------+----------+-------------+
 2 rows in set, 1 warning (0.01 sec)
 
@@ -604,7 +604,7 @@ mysql> desc select update_time, count(*) as cnt from t1 group by update_time;
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+---------------------------------+
 | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra                           |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+---------------------------------+
-|  1 | SIMPLE      | t1   | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5703 |   100.00 | Using temporary; Using filesort |
+|  1 | SIMPLE      | t1    | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5703 |   100.00 | Using temporary; Using filesort |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+---------------------------------+
 1 row in set, 1 warning (0.01 sec)
 
@@ -613,7 +613,7 @@ mysql> desc select update_time, count(*) as cnt from t1 group by update_time ord
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-----------------+
 | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra           |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-----------------+
-|  1 | SIMPLE      | t1   | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5703 |   100.00 | Using temporary |
+|  1 | SIMPLE      | t1    | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5703 |   100.00 | Using temporary |
 +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-----------------+
 1 row in set, 1 warning (0.01 sec)
 ```
